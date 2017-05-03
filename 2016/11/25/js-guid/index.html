@@ -1,0 +1,672 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Iterableiterable（Array, Map, Set都属于iterable类型）具有iterable类型的集合可以通过新的for…of循环来遍历 argumentsarguments是JavaScript免费提供的一个关键字，它只在函数内部起作用，并且永远指向当前函数的调用者传入的所有参数。argumentss类似数组但不是数组。  全局作用域不在任何函数内定义的变量就具有全局作用域。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Js权威指南笔记">
+<meta property="og:url" content="https://zfr-blog/2016/11/25/js-guid/index.html">
+<meta property="og:site_name" content="Just Do It">
+<meta property="og:description" content="Iterableiterable（Array, Map, Set都属于iterable类型）具有iterable类型的集合可以通过新的for…of循环来遍历 argumentsarguments是JavaScript免费提供的一个关键字，它只在函数内部起作用，并且永远指向当前函数的调用者传入的所有参数。argumentss类似数组但不是数组。  全局作用域不在任何函数内定义的变量就具有全局作用域。">
+<meta property="og:updated_time" content="2016-11-25T09:36:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Js权威指南笔记">
+<meta name="twitter:description" content="Iterableiterable（Array, Map, Set都属于iterable类型）具有iterable类型的集合可以通过新的for…of循环来遍历 argumentsarguments是JavaScript免费提供的一个关键字，它只在函数内部起作用，并且永远指向当前函数的调用者传入的所有参数。argumentss类似数组但不是数组。  全局作用域不在任何函数内定义的变量就具有全局作用域。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zfr-blog/2016/11/25/js-guid/"/>
+
+
+
+
+
+  <title>Js权威指南笔记 | Just Do It</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just Do It</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://zfr-blog/2016/11/25/js-guid/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang FengRui">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Do It">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Js权威指南笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-25T17:30:36+08:00">
+                2016-11-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Iterable"><a href="#Iterable" class="headerlink" title="Iterable"></a>Iterable</h2><p>iterable（Array, Map, Set都属于iterable类型）<br>具有iterable类型的集合可以通过新的for…of循环来遍历</p>
+<h2 id="arguments"><a href="#arguments" class="headerlink" title="arguments"></a>arguments</h2><p>arguments是JavaScript免费提供的一个关键字，它只在函数内部起作用，并且永远指向当前函数的调用者传入的所有参数。argumentss类似数组但不是数组。 </p>
+<h2 id="全局作用域"><a href="#全局作用域" class="headerlink" title="全局作用域"></a>全局作用域</h2><p>不在任何函数内定义的变量就具有全局作用域。JavaScript默认有一个全局对象window，全局作用域的变量实际上呗绑定到window的一个属性。<br>JavaScript的函数定义有个特点，它会先扫描整个函数体的语句，把所有声明的变量“提升”到函数顶部</p>
+<p>##this<br>在一个函数内部，this是一个特殊变量，它始终指向当前对象，所以通过this.可以拿到当前对象的属性<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&apos;use strict&apos;;</div><div class="line"></div><div class="line">var obj = &#123;</div><div class="line">    name: &apos;小明&apos;,</div><div class="line">    birth: 1990,</div><div class="line">    age: function () &#123;</div><div class="line">        function getAgeFromBirth() &#123;</div><div class="line">            var y = new Date().getFullYear();</div><div class="line">            return y - this.birth;</div><div class="line">        &#125;</div><div class="line">        return getAgeFromBirth();</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">obj.age();</div></pre></td></tr></table></figure></p>
+<p>this指针只在age方法的函数内指向obj对象，而在函数内部定义的函数，this又指向了undefined(在非strict模式下，它重新指向全局对象window)<br>解决方案：使用apply或者call来重新定义this的指向<br>要指定函数的this指向哪个对象，可以用函数本身的apply方法，它接收两个参数，第一个参数就是需要绑定的this变量，第二个参数是数组，表示函数本身的参数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">function getAge() &#123;</div><div class="line">    var y = new Date().getFullYear();</div><div class="line">    return y - this.birth;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var xiaoming = &#123;</div><div class="line">    name: &apos;小明&apos;,</div><div class="line">    birth: 1990,</div><div class="line">    age: getAge</div><div class="line">&#125;;</div><div class="line"></div><div class="line">xiaoming.age(); // 25</div><div class="line">getAge.apply(xiaoming, []);</div></pre></td></tr></table></figure></p>
+<p>嵌套的函数不会从调用它的函数中继承this。如果嵌套函数作为方法调用，其this的值指向调用他的函数。如果嵌套函数作为函数调用，其this值不是全局对象就是undefined。如果你想访问这个外部函数的this值，需要将this的值保存在一个变量里，这个变量和内部函数在一个作用域内。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">var obj = &#123;                               // 对象obj</div><div class="line">    method: function() &#123;                  // 对象中的方法method()</div><div class="line">        var self = this;                  // 将this的值保存到一个变量中</div><div class="line">        console.log(this === obj);          // 输出true，this就是这个对象obj</div><div class="line">        f();                              // 调用辅助函数f()</div><div class="line"></div><div class="line">        function f() &#123;                    // 定义一个嵌套函数f()</div><div class="line">            console.log(obj === this);          // &quot;false&quot;: this的值是全局对象或者是undefined</div><div class="line">            console.log(obj === self);          // &quot;true&quot;: self指外部函数的this值</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>当访问一个对象的属性时，JavaScript引擎首先在该对象上查找该属性，如果没有找到，就会去其原型上找，如果还没有找到，就一直上溯到Object.prototype对象，最好还没有找到，返回undefined。</p>
+<h2 id="原生Ajax"><a href="#原生Ajax" class="headerlink" title="原生Ajax"></a>原生Ajax</h2><p>创建XMLHttpRequest对象<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">var xmlHttp;</div><div class="line">if (window.XMLHttpRequest) &#123;</div><div class="line">    // 针对高版本浏览器</div><div class="line">    xmlHttp = new XMLHttpRequest();</div><div class="line">&#125; else &#123;</div><div class="line">    // 针对低版本浏览器</div><div class="line">    xmlHttp = new ActiveXObject(&quot;Microsoft.XMLHttp&quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>向服务器发送请求</p>
+<p>如需将请求发送到服务器，我们使用XMLHttpRequst对象的open() 和send()方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">// 规定请求类型、URL以及是否异步处理请求</div><div class="line">xmlHttp.open(&quot;method: 对应请求的类型&quot;, &quot;url: 对应请求的接口&quot;, &quot;async: true(异步)或false(同步)&quot;);</div><div class="line"></div><div class="line">// 将请求发到服务器</div><div class="line">xmlHttp.send();</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/11/js-extend/" rel="next" title="JavaScript继承实现">
+                <i class="fa fa-chevron-left"></i> JavaScript继承实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Zhang FengRui" />
+          <p class="site-author-name" itemprop="name">Zhang FengRui</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Iterable"><span class="nav-number">1.</span> <span class="nav-text">Iterable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#arguments"><span class="nav-number">2.</span> <span class="nav-text">arguments</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#全局作用域"><span class="nav-number">3.</span> <span class="nav-text">全局作用域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原生Ajax"><span class="nav-number">4.</span> <span class="nav-text">原生Ajax</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhang FengRui</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

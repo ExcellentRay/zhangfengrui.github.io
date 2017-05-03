@@ -1,0 +1,680 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="首先定义一个父类123456789101112// 定义一个动物类function Animal(name) &amp;#123;  this.name = name || &amp;apos;Animal&amp;apos;;  this.sleep = function() &amp;#123;    console.log(this.name + &amp;apos;正在睡觉!&amp;apos;);  &amp;#125;&amp;#125;//原型方">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript继承实现">
+<meta property="og:url" content="https://zfr-blog/2016/11/11/js-extend/index.html">
+<meta property="og:site_name" content="Just Do It">
+<meta property="og:description" content="首先定义一个父类123456789101112// 定义一个动物类function Animal(name) &amp;#123;  this.name = name || &amp;apos;Animal&amp;apos;;  this.sleep = function() &amp;#123;    console.log(this.name + &amp;apos;正在睡觉!&amp;apos;);  &amp;#125;&amp;#125;//原型方">
+<meta property="og:updated_time" content="2016-11-11T09:28:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript继承实现">
+<meta name="twitter:description" content="首先定义一个父类123456789101112// 定义一个动物类function Animal(name) &amp;#123;  this.name = name || &amp;apos;Animal&amp;apos;;  this.sleep = function() &amp;#123;    console.log(this.name + &amp;apos;正在睡觉!&amp;apos;);  &amp;#125;&amp;#125;//原型方">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zfr-blog/2016/11/11/js-extend/"/>
+
+
+
+
+
+  <title>JavaScript继承实现 | Just Do It</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just Do It</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://zfr-blog/2016/11/11/js-extend/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang FengRui">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Do It">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                JavaScript继承实现
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-11T17:16:58+08:00">
+                2016-11-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="首先定义一个父类"><a href="#首先定义一个父类" class="headerlink" title="首先定义一个父类"></a>首先定义一个父类</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">// 定义一个动物类</div><div class="line">function Animal(name) &#123;</div><div class="line">  this.name = name || &apos;Animal&apos;;</div><div class="line">  this.sleep = function() &#123;</div><div class="line">    console.log(this.name + &apos;正在睡觉!&apos;);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">//原型方法</div><div class="line">Animal.prototype.eat = function(food) &#123;</div><div class="line">  console.log(this.name + &apos;正在吃&apos; + food);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="1、原型链继承"><a href="#1、原型链继承" class="headerlink" title="1、原型链继承"></a>1、原型链继承</h2><p>核心：将父类的实例作为子类的原型<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">function Cat() &#123;</div><div class="line">&#125;</div><div class="line"></div><div class="line">Cat.prototype = new Animal();</div><div class="line">Cat.prototype.name = &apos;cat&apos;;</div><div class="line"></div><div class="line">var cat = new Cat();</div><div class="line">console.log(cat.name);</div><div class="line">console.log(cat.eat(&apos;fish&apos;));</div><div class="line">console.log(cat.sleep());</div><div class="line">console.log(cat instanceof Animal); // true</div><div class="line">console.log(cat instanceof Cat); // true</div></pre></td></tr></table></figure></p>
+<p>特点：<br>1、非常纯粹的继承关系，实例是子类的实例，也是父类的实例<br>2、父类新增原型方法/原型属性，子类都能访问到<br>3、简单、易于实现<br>缺点：<br>1、想要为子类新增属性和方法，必须要在new Animal()这样的语句之后执行，不能放到构造器中<br>2、无法实现多继承<br>3、来自原型对象的引用属性是所以实例共享的<br>4、创建子类实例时，无法向父类构造函数穿参</p>
+<h2 id="2、构造继承"><a href="#2、构造继承" class="headerlink" title="2、构造继承"></a>2、构造继承</h2><p>核心：使用父类的构造函数来增强子类实例，等于是复制父类的实例属性给子类（没用到原型）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">function Cat(name) &#123;</div><div class="line">    Animal.call(this);</div><div class="line">    this.name = name || &apos;Tom&apos;;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var cat = new Cat();</div><div class="line">console.log(cat.name);</div><div class="line">console.log(cat.sleep());</div><div class="line">console.log(cat instanceof Animal); // false</div><div class="line">console.log(cat instanceof Cat); // true</div></pre></td></tr></table></figure></p>
+<p>特点：<br>1、解决了1中，子类实例共享父类引用属性的问题<br>2、创建子类实例时，可以向父类传递参数<br>3、可以实现多继承（call多个父类对象）<br>缺点：<br>1、实例并不是父类的实例，只是子类的实例<br>2、只能继承父类的实例属性和方法，不能继承原型属性/方法<br>3、无法实现函数复用，每个子类都有父类实例函数的副本，影响性能</p>
+<h2 id="3、实例继承"><a href="#3、实例继承" class="headerlink" title="3、实例继承"></a>3、实例继承</h2><p>核心：为父类实例条件新特性，作为子类实例返回<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">function Cat(name) &#123;</div><div class="line">    var instance = new Animal();</div><div class="line">    instance.name = name || &apos;Tom&apos;;</div><div class="line">    return instance;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var cat = new Cat();</div><div class="line">console.log(cat.name);</div><div class="line">console.log(cat.sleep());</div><div class="line">console.log(cat instanceof Animal); // true</div><div class="line">console.log(cat instanceof Cat); // false</div></pre></td></tr></table></figure></p>
+<p>特点：<br>1、不限调用方式，不管是new子类（）还是子类（），返回的对象具有相同的效果<br>缺点：<br>1、实例是父类的实例，不是子类的实例<br>2、不支持多继承</p>
+<h2 id="4、拷贝继承"><a href="#4、拷贝继承" class="headerlink" title="4、拷贝继承"></a>4、拷贝继承</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">function Cat(name) &#123;</div><div class="line">    var animal = new aAnimal();</div><div class="line">    for(var p in animal) &#123;</div><div class="line">        Cat.prototype[p] = animal[p];</div><div class="line">    &#125;</div><div class="line">    Cat.prototype.name = name || &apos;Tom&apos;;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var cat = new Cat();</div><div class="line">console.log(cat.name);</div><div class="line">console.log(cat.sleep());</div><div class="line">console.log(cat instanceof Animal); // false</div><div class="line">console.log(cat instanceof Cat); // true</div></pre></td></tr></table></figure>
+<p>特点：<br>1、支持多继承<br>缺点：<br>1、效率较低、内存占用高（因为要拷贝父类的属性）<br>2、无法获取父类不可枚举的方法（不可枚举方法，不能使用for in访问到）</p>
+<h2 id="5、组合继承"><a href="#5、组合继承" class="headerlink" title="5、组合继承"></a>5、组合继承</h2><p>核心：通过调用父类构造，继承父类的属性并保留传参的优点，然后通过将父类实例作为子类原型，实现函数复用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">function Cat(name) &#123;</div><div class="line">    Animal.call(this);</div><div class="line">    this.name = name || &apos;Tom&apos;;</div><div class="line">&#125;</div><div class="line">Cat.prototype = new Animal();</div><div class="line"></div><div class="line">var cat = new Cat();</div><div class="line">console.log(cat.name);</div><div class="line">console.log(cat.sleep());</div><div class="line">console.log(cat instanceof Animal);</div><div class="line">console.log(cat instanceof Cat);</div></pre></td></tr></table></figure></p>
+<p>特点：<br>1、弥补了构造继承的缺陷，可以继承实例属性/方法，也可以继承原型属性/方法<br>2、即是子类的实例，也是父类的实例<br>3、不存在引用属性共享问题<br>4、可传参<br>5、函数可复用<br>缺点：<br>1、调用了两次父类构造函数，生成了两份实例（子类实例将子类原型上的那份屏蔽了）</p>
+<h2 id="6、寄生组合继承"><a href="#6、寄生组合继承" class="headerlink" title="6、寄生组合继承"></a>6、寄生组合继承</h2><p>核心：通过寄生方式，砍掉父类实例属性，这样，在调用两次父类的构造的时候，就不会初始化两次实例方法/属性，避免组合继承的缺点<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">function Cat(name) &#123;</div><div class="line">    Animal.call(this);</div><div class="line">    this.name = name || &apos;Tom&apos;;</div><div class="line">&#125;</div><div class="line"></div><div class="line">(function() &#123;</div><div class="line">    // 创建一个没有实例方法的类</div><div class="line">    var Super = function() &#123;&#125;;</div><div class="line">    Super.prototype = Animal.prototype;</div><div class="line">    Cat.prototype = new Super();</div><div class="line">&#125;)();</div><div class="line"></div><div class="line">var cat = new Cat();</div><div class="line">console.log(cat.name);</div><div class="line">console.log(cat).sleep();</div><div class="line">console.log(cat instanceof Animal); // true</div><div class="line">console.log(cat instanceof Cat); // true</div></pre></td></tr></table></figure></p>
+<p>特点：<br>1、看成完美<br>缺点：<br>1、实现较为复杂</p>
+<p>实例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">function Animal(name) &#123;</div><div class="line">    // 属性</div><div class="line">    this.name = name || &apos;Animal&apos;;</div><div class="line">    // 实例方法</div><div class="line">    this.sleep = function() &#123;</div><div class="line">        console.log(this.name + &apos;正在睡觉！&apos;);</div><div class="line">    &#125;</div><div class="line">    // 实例引用属性</div><div class="line">    this.features = [];</div><div class="line">&#125;</div><div class="line"></div><div class="line">function Cat(name) &#123;&#125;</div><div class="line"></div><div class="line">Cat.prototype = new Animal();</div><div class="line"></div><div class="line">var tom = new Cat(&apos;Tom&apos;);</div><div class="line">var kissy = new Cat(&apos;kissy&apos;);</div><div class="line"></div><div class="line">console.log(tom.name); // &quot;Animal&quot;</div><div class="line">console.log(kissy.name); // &quot;Animal&quot;</div><div class="line">console.log(tom.features); // []</div><div class="line">console.log(kissy.features); // []</div><div class="line"></div><div class="line">tom.name = &apos;Tom-New Name&apos;;</div><div class="line">tom.features.push(&apos;eat&apos;);</div><div class="line"></div><div class="line">//针对父类实例值类型成员的更改，不影响</div><div class="line">console.log(tom.name); // &apos;Tom-New Name&apos;</div><div class="line">console.log(kissy.name); // &apos;Animal&apos;</div><div class="line">//针对父类实例引用类型成员的更改，会通过影响其他子类实例</div><div class="line">console.log(tom.features); // [&apos;eat&apos;]</div><div class="line">console.log(kissy.features); // [&apos;eat&apos;]</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/04/js-obj/" rel="next" title="JavaScript面向对象实现">
+                <i class="fa fa-chevron-left"></i> JavaScript面向对象实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/25/js-guid/" rel="prev" title="Js权威指南笔记">
+                Js权威指南笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Zhang FengRui" />
+          <p class="site-author-name" itemprop="name">Zhang FengRui</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#首先定义一个父类"><span class="nav-number">1.</span> <span class="nav-text">首先定义一个父类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1、原型链继承"><span class="nav-number">2.</span> <span class="nav-text">1、原型链继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、构造继承"><span class="nav-number">3.</span> <span class="nav-text">2、构造继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、实例继承"><span class="nav-number">4.</span> <span class="nav-text">3、实例继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4、拷贝继承"><span class="nav-number">5.</span> <span class="nav-text">4、拷贝继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5、组合继承"><span class="nav-number">6.</span> <span class="nav-text">5、组合继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6、寄生组合继承"><span class="nav-number">7.</span> <span class="nav-text">6、寄生组合继承</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhang FengRui</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
