@@ -96,7 +96,7 @@
 <meta property="og:url" content="https://zfr_blog.github.io/2016/09/24/webpackProperty/index.html">
 <meta property="og:site_name" content="Just Do It">
 <meta property="og:description" content="webpack 简介webpack是一个模块打包工具。它使得模块相互依赖并且可构建等价于这些模块的静态资源。相比于已经存在的模块打包器，webpack的开发动机是实现代码分包和通过模块化完成代码的威风集成。webpack可以根据项目需求合并代码，并且支持按需加载。webpack的实现目标是：1.拆分依赖树为多个按需加载的chunk2.保证快速首屏加载3.每种静态资源都可以成为模块4.能够将第三方库">
-<meta property="og:updated_time" content="2016-09-24T08:59:59.000Z">
+<meta property="og:updated_time" content="2017-05-05T08:12:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Webpack属性总结">
 <meta name="twitter:description" content="webpack 简介webpack是一个模块打包工具。它使得模块相互依赖并且可构建等价于这些模块的静态资源。相比于已经存在的模块打包器，webpack的开发动机是实现代码分包和通过模块化完成代码的威风集成。webpack可以根据项目需求合并代码，并且支持按需加载。webpack的实现目标是：1.拆分依赖树为多个按需加载的chunk2.保证快速首屏加载3.每种静态资源都可以成为模块4.能够将第三方库">
@@ -329,7 +329,7 @@
 <p>path: 指定输出文件路径<br>filename: 输出文件名<br>publicPath: 设置为想要的资源访问路径。访问时，则需要通过类似<code>http://localhost:8080/asstes/index.js</code>来访问资源，如果没有设置，则默认从站点根目录加载</p>
 <h2 id="loader"><a href="#loader" class="headerlink" title="loader"></a>loader</h2><p>loader是wenbpack中比较重要的部分，是处理各类资源的执行者。是一系列的函数，将资源中的代码作为参数，然后返回新的代码。你可以用loader告诉webpack可以加载哪些文件，或者不加载哪些文件。<br>Loader的特点<br>1.可以链式执行。它们在一个管道中被提交，只需要保证最后的loader返回JavaScript即可，其他loader可以返回任意方便下一个loader处理的内容。<br>2.可以异步或者同步执行<br>3.运行在Node.js中，可以做几乎任何事儿<br>4.可以接收query参数，用于向loader传递参数<br>5.配置中可与正则/扩展结合使用<br>6.可以在npm中发布并使用<br>7.除了main,其他模块可以导出成loader<br>8.可以通过配置调入<br>9.和插件（plugins）配合可获得更多功能<br>10.可生成其他格式文件</p>
 <h2 id="loader支持多种类型"><a href="#loader支持多种类型" class="headerlink" title="loader支持多种类型"></a>loader支持多种类型</h2><p>常用的xxx-loader类型有：html、css、jsx、coffee、jade、less、sass、style</p>
-<h2 id="配置loader"><a href="#配置loader" class="headerlink" title="配置loader"></a>配置loader</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">modules: &#123;</div><div class="line">  loaders: [&#123;</div><div class="line">    test: /\.js$,</div><div class="line">    exclude: /node_modules,</div><div class="line">    loaders: &apos;xxx-loader?a=x&amp;b=y&apos;</div><div class="line">  &#125;]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="配置loader"><a href="#配置loader" class="headerlink" title="配置loader"></a>配置loader</h2><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">modules: &#123;</div><div class="line">  loaders: [&#123;</div><div class="line">    test: /\.js$,</div><div class="line">    exclude: /node_modules,</div><div class="line">    loaders: 'xxx-loader?a=x&amp;b=y'</div><div class="line">  &#125;]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>test: 匹配希望处理文件的路径<br>exclude: 匹配不希望处理文件的路径<br>loaders: xxx-loader可以简写为xxx，？后以query方式传递给loader参数</p>
 <h3 id="处理图片、字体等文件"><a href="#处理图片、字体等文件" class="headerlink" title="处理图片、字体等文件"></a>处理图片、字体等文件</h3><p>在css中或者js做集中，都会涉及到require图片的情况，webpack可以内联图片地址到打包js中并且通过require()返回图片路径。当然,不只是图片，还有css种用到的iconfont。特殊情况用到的flash等，都可以相似处理。这里，需要用到url-loader或file-loader。</p>
 
