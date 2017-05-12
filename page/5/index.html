@@ -90,16 +90,12 @@
 
 
 
-<meta name="description" content="1234567891011121314151617181920212223242526272829303132333435363738394041// 初始化前立即调用，服务器和客户端知道调用一次。如果在这个方法内调用setState， render()将会感知到更新后的state，将会执行仅一次，尽管state改变了。componentWillMount() &amp;#123;    this.set">
-<meta property="og:type" content="article">
-<meta property="og:title" content="React生命周期">
-<meta property="og:url" content="https://zhangfengrui.github.io/2016/09/10/reactCycle/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Just Do It">
+<meta property="og:url" content="https://zhangfengrui.github.io/page/5/index.html">
 <meta property="og:site_name" content="Just Do It">
-<meta property="og:description" content="1234567891011121314151617181920212223242526272829303132333435363738394041// 初始化前立即调用，服务器和客户端知道调用一次。如果在这个方法内调用setState， render()将会感知到更新后的state，将会执行仅一次，尽管state改变了。componentWillMount() &amp;#123;    this.set">
-<meta property="og:updated_time" content="2017-05-05T08:11:47.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="React生命周期">
-<meta name="twitter:description" content="1234567891011121314151617181920212223242526272829303132333435363738394041// 初始化前立即调用，服务器和客户端知道调用一次。如果在这个方法内调用setState， render()将会感知到更新后的state，将会执行仅一次，尽管state改变了。componentWillMount() &amp;#123;    this.set">
+<meta name="twitter:title" content="Just Do It">
 
 
 
@@ -127,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="https://zhangfengrui.github.io/2016/09/10/reactCycle/"/>
+  <link rel="canonical" href="https://zhangfengrui.github.io/page/5/"/>
 
 
 
 
 
-  <title>React生命周期 | Just Do It</title>
+  <title>Just Do It</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -158,7 +154,9 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail ">
+  <div class="container sidebar-position-left 
+   page-home 
+ ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -241,9 +239,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
 
   
 
@@ -252,7 +250,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://zhangfengrui.github.io/2016/09/10/reactCycle/">
+    <link itemprop="mainEntityOfPage" href="https://zhangfengrui.github.io/2016/07/03/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhang FengRui">
@@ -273,7 +271,10 @@
             
             
               
-                React生命周期
+                
+                <a class="post-title-link" href="/2016/07/03/hello-world/" itemprop="url">
+                  Hello World
+                </a>
               
             
           </h1>
@@ -288,8 +289,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-10T16:27:18+08:00">
-                2016-09-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-03T14:59:30+08:00">
+                2016-07-03
               </time>
             
 
@@ -323,28 +324,32 @@
       
 
       
-        <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 初始化前立即调用，服务器和客户端知道调用一次。如果在这个方法内调用setState， render()将会感知到更新后的state，将会执行仅一次，尽管state改变了。</span></div><div class="line">componentWillMount() &#123;</div><div class="line">    <span class="keyword">this</span>.setState(&#123;</div><div class="line">        <span class="attr">str</span>: <span class="string">"调用前改变了一下state"</span></div><div class="line">    &#125;);</div><div class="line">    alert(<span class="string">"初始化前componentWillMount被调用"</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 在初始化渲染执行后立刻调用一次，仅客户端调用（服务器断不会调用）。在生命周期中的这个时间点，组件拥有一个DOM展现，你可以通过this.getDOMNode()来获取相应的DOM节点。</span></div><div class="line">componentDidMount() &#123;</div><div class="line">    alert(<span class="string">"渲染后执行componentDidMount"</span>);</div><div class="line">    <span class="keyword">this</span>.setState(&#123;</div><div class="line">        <span class="attr">str</span>: <span class="string">"did后改变了一下"</span></div><div class="line">    &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 在组件接收到新的props的时候调用。在初始化选的时候，此方法不会调用。用此函数可以作为react在prop传入之后，render()渲染之前更新state的机会。老的props可以通过this.props获取到。在函数中调用this.setState()将不会引起第二次渲染。</span></div><div class="line">componentWillReceiveProp(nextProps) &#123;</div><div class="line">    alert(<span class="string">"接收新的props之后调用componentWillReceiveProp"</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 在接收到新的state或者props，将要渲染之前调用。该方法在初始化渲染的时候不会调用，在使用forceUpdate方法的时候也不会调用。如果确定新的state或者props不回导致组件更新，则应该返回false</span></div><div class="line">shouldComponentUpdate() &#123;</div><div class="line">    alert(<span class="string">"接收state或者props之前调用shouldComponentUpdate"</span>);</div><div class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 在接受到新的props或者state之前立刻调用。在初始化渲染的时候该方法不会被调用。使用该方法做一些更新之前的准备工作。</span></div><div class="line">componentWillUpdate() &#123;</div><div class="line">    alert(<span class="string">"props更新之前调用componcomponentWillUpdate"</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 在组件的更新已经同步到DOM中之后立刻被调用。该方法不会再初始化渲染的时候调用。使用该方法可以在组件更新之后操作DOM元素。</span></div><div class="line">componentDidUpdate() &#123;</div><div class="line">    alert(<span class="string">"组件更新之后调用componentDidUpdate"</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 从DOM中移除的时候立刻被调用。在该方法中执行任何必要的清理，比如无效的定时器，或者清除在componentDidMount中创建的DOM元素。</span></div><div class="line">componentWillUnmount() &#123;</div><div class="line">    alert(<span class="string">"卸载的时候调用componentWillUnmount"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+        
+          
+            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"hello world"</span></div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+
+          
+        
       
     </div>
 
     <div>
       
-        
-
-      
     </div>
 
     <div>
       
-        
-
-      
     </div>
 
     <div>
-      
-        
-
       
     </div>
 
@@ -352,42 +357,25 @@
       
 
       
-        
+
       
 
       
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2016/08/28/redux/" rel="next" title="Redux">
-                <i class="fa fa-chevron-left"></i> Redux
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/09/24/webpackProperty/" rel="prev" title="Webpack属性总结">
-                Webpack属性总结 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
       
-
-      
+        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
+    
+  </section>
 
-    <div class="post-spread">
-      
-    </div>
-  </div>
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span>
+  </nav>
+
 
 
           </div>
@@ -395,10 +383,6 @@
 
 
           
-  <div class="comments" id="comments">
-    
-  </div>
-
 
         </div>
         
@@ -576,10 +560,6 @@
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
-
-
 
   
 

@@ -90,16 +90,12 @@
 
 
 
-<meta name="description" content="gulp有五个方法task、run、watch、src、dest 引入组件123456789101112var gulp = require(&apos;gulp&apos;),    sass = require(&apos;gulp-sass&apos;),    autoprefixer = require(&apos;gulp-autoprefixer&apos;),    minifycss = require(&apos;gulp-minify-css&apos;">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Gulp随笔">
-<meta property="og:url" content="https://zhangfengrui.github.io/2016/08/15/gulp/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Just Do It">
+<meta property="og:url" content="https://zhangfengrui.github.io/page/4/index.html">
 <meta property="og:site_name" content="Just Do It">
-<meta property="og:description" content="gulp有五个方法task、run、watch、src、dest 引入组件123456789101112var gulp = require(&apos;gulp&apos;),    sass = require(&apos;gulp-sass&apos;),    autoprefixer = require(&apos;gulp-autoprefixer&apos;),    minifycss = require(&apos;gulp-minify-css&apos;">
-<meta property="og:updated_time" content="2017-05-05T08:10:45.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Gulp随笔">
-<meta name="twitter:description" content="gulp有五个方法task、run、watch、src、dest 引入组件123456789101112var gulp = require(&apos;gulp&apos;),    sass = require(&apos;gulp-sass&apos;),    autoprefixer = require(&apos;gulp-autoprefixer&apos;),    minifycss = require(&apos;gulp-minify-css&apos;">
+<meta name="twitter:title" content="Just Do It">
 
 
 
@@ -127,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="https://zhangfengrui.github.io/2016/08/15/gulp/"/>
+  <link rel="canonical" href="https://zhangfengrui.github.io/page/4/"/>
 
 
 
 
 
-  <title>Gulp随笔 | Just Do It</title>
+  <title>Just Do It</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -158,7 +154,9 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail ">
+  <div class="container sidebar-position-left 
+   page-home 
+ ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -241,9 +239,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
 
   
 
@@ -273,7 +271,10 @@
             
             
               
-                Gulp随笔
+                
+                <a class="post-title-link" href="/2016/08/15/gulp/" itemprop="url">
+                  Gulp随笔
+                </a>
               
             
           </h1>
@@ -323,7 +324,9 @@
       
 
       
-        <p>gulp有五个方法task、run、watch、src、dest</p>
+        
+          
+            <p>gulp有五个方法task、run、watch、src、dest</p>
 <h2 id="引入组件"><a href="#引入组件" class="headerlink" title="引入组件"></a>引入组件</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>),</div><div class="line">    sass = <span class="built_in">require</span>(<span class="string">'gulp-sass'</span>),</div><div class="line">    autoprefixer = <span class="built_in">require</span>(<span class="string">'gulp-autoprefixer'</span>),</div><div class="line">    minifycss = <span class="built_in">require</span>(<span class="string">'gulp-minify-css'</span>),</div><div class="line">    jshint = <span class="built_in">require</span>(<span class="string">'gulp-jshint'</span>),</div><div class="line">    uglify = <span class="built_in">require</span>(<span class="string">'gulp-uglify'</span>),</div><div class="line">    imagemin = <span class="built_in">require</span>(<span class="string">'gulp-imagemin'</span>),</div><div class="line">    rename = <span class="built_in">require</span>(<span class="string">'gulp-rename'</span>),</div><div class="line">    concat = <span class="built_in">require</span>(<span class="string">'gulp-concat'</span>),</div><div class="line">    notify = <span class="built_in">require</span>(<span class="string">'gulp-notify'</span>),</div><div class="line">    cache = <span class="built_in">require</span>(<span class="string">'gulp-cache'</span>),</div><div class="line">    livereload = <span class="built_in">require</span>(<span class="string">'gulp-livereload'</span>);</div></pre></td></tr></table></figure>
 <p>接下来差创建lint、sass、script、default四个不同的任务。</p>
 <h2 id="Lint任务"><a href="#Lint任务" class="headerlink" title="Lint任务"></a>Lint任务</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">gulp.task(<span class="string">'lint'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    gulp.src(<span class="string">'./js/*.js'</span>)</div><div class="line">        .pipe(jshint())</div><div class="line">        .pipe(jshint.reporter(<span class="string">'default'</span>));</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
@@ -335,27 +338,20 @@
 <h2 id="Default任务"><a href="#Default任务" class="headerlink" title="Default任务"></a>Default任务</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">gulp.task(<span class="string">'default'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    gulp.run(<span class="string">'lint'</span>, <span class="string">'sass'</span>, <span class="string">'scripts'</span>);</div><div class="line">    gulp.watch(<span class="string">'./js/*.js'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        gulp.run(<span class="string">'lint'</span>, <span class="string">'sass'</span>, <span class="string">'scripts'</span>);</div><div class="line">    &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <p>该任务基于其他任务，通过启动default来启动其他任务</p>
 
+          
+        
       
     </div>
 
     <div>
       
-        
-
-      
     </div>
 
     <div>
       
-        
-
-      
     </div>
 
     <div>
-      
-        
-
       
     </div>
 
@@ -363,42 +359,273 @@
       
 
       
-        
+
       
 
       
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2016/07/30/jsType/" rel="next" title="Js中的数据类型">
-                <i class="fa fa-chevron-left"></i> Js中的数据类型
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/08/28/redux/" rel="prev" title="Redux">
-                Redux <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
       
-
-      
+        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
+    
+      
 
-    <div class="post-spread">
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://zhangfengrui.github.io/2016/07/30/jsType/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang FengRui">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Do It">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/07/30/jsType/" itemprop="url">
+                  Js中的数据类型
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-30T16:08:16+08:00">
+                2016-07-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="js中的数据类型"><a href="#js中的数据类型" class="headerlink" title="js中的数据类型"></a>js中的数据类型</h2><p>undefined null boolean string number object</p>
+<h2 id="Undefined类型"><a href="#Undefined类型" class="headerlink" title="Undefined类型"></a>Undefined类型</h2><p>Undefined类型只有一个值，即特殊的undefined。声明完一个变量但为对其加以初始化时，这个变量的值就是undefined,当声明一个变量时未经初始化的值就会默认取得undefined值。<br>var message；<br>typeof message // undefined<br>message == undefined true</p>
+<h2 id="Null类型"><a href="#Null类型" class="headerlink" title="Null类型"></a>Null类型</h2><p>Null类型也是只有一个值，这个值就是null。从逻辑的角度来讲，null值表示一个空对象指针。当使用typeof来判断类型时，就会出现typeof null 为object的情况。Null的使用，当定义一个变量时，如果准备将来用于保存对象，那么最好将该变量初始化为null而不是其他值。<br>Undefined和Null的关系<br>事实上，undefined值是由null派生而来的，因此判断他们的的相等性时会返回true，即alert(undefined == null); 返回true。</p>
+<h2 id="Boolean类型"><a href="#Boolean类型" class="headerlink" title="Boolean类型"></a>Boolean类型</h2><p>Boolean类型是比较常用的类型，该类型只有两个字面值true和false。要注意的一点是，这两个值与数字值不是一回事，true不一定等于1，而false也不一定等于0.true和false是区分大小写的。</p>
+<h2 id="Number类型"><a href="#Number类型" class="headerlink" title="Number类型"></a>Number类型</h2><p>Number类型，这里主要说一下一个特殊的数值，NaN即非数值（Not a Number），这个数值用于表示一个本来要返回数值的操作是未返回数值的情况。3个可以将非字符型的数值转化为字符型：Number()、paeseInt()、parseFloat()。</p>
+<h2 id="String类型"><a href="#String类型" class="headerlink" title="String类型"></a>String类型</h2><p>String类型用于表示字符串，字符串可以有双引号或单引号表示。<br>字符串的特点：<br>ECMAScript中的字符串是不可以改变的，字符串一旦被创建，他们的值就不会改变。要改变某个变量保存的字符串，首先要销毁原来的字符串，然后再用另一个新的包含新值得字符串填充该变量。<br>转化为字符串：<br>使用几乎每个值都有的toString()方法。</p>
+
+          
+        
       
     </div>
-  </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://zhangfengrui.github.io/2016/07/10/nodeJs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang FengRui">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Do It">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/07/10/nodeJs/" itemprop="url">
+                  Node Js
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-10T15:59:40+08:00">
+                2016-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="什么是Node-js"><a href="#什么是Node-js" class="headerlink" title="什么是Node.js"></a>什么是Node.js</h2><p>当你看到node.js是是否以为它是一份javascript应用？事实上node.js采用c++语言编写，由javascript而成，是一个javascript的运行环境。采用c++编写是应为编写者想要尝试采用v8引擎。node.js是js的一个解析器。</p>
+<h2 id="Node-js和其他后端语言有什么不同"><a href="#Node-js和其他后端语言有什么不同" class="headerlink" title="Node.js和其他后端语言有什么不同"></a>Node.js和其他后端语言有什么不同</h2><p>举一个简单的例子，node.js和java的区别。<br>Node.js比Java更快 ：node.js开发快，运行的效率也算比较高，但是如果项目大了就容易乱，比较容易开发小型项目，而且javascript不是静态类型的语言，要到运行时才知道类型错误，所以写的多了之后免不了会出现光知道有错但是找不到哪儿错的情况，所以测试就得些的更好更详细。<br>java开发慢，但是如果项目大、复杂的话，用java就不容易乱，管理起来比node.js省。</p>
+<h2 id="我们为什么要使用Node-js"><a href="#我们为什么要使用Node-js" class="headerlink" title="我们为什么要使用Node.js"></a>我们为什么要使用Node.js</h2><p>Node.js的是旨在提供一种简单的构建可伸缩网络程序的方法。<br>Node.js是服务器端的 JavaScript 运行环境，它具有无阻塞(non-blocking)和事件驱动(event-driven)等的特色，Node.js 采用 V8 引擎，同样，Node.js 实现了类似 Apache 和 nginx 的web服务，让你可以通过它来搭建基于 JavaScript 的 Web App。<br>在NodeJS中，客户端和服务器互相发起通信，使他们能够自由地交换数据。与此形成鲜明对比的是典型传统的web响应模式，客户端总是要先启动通信。</p>
+<h2 id="Node-js的特点"><a href="#Node-js的特点" class="headerlink" title="Node.js的特点"></a>Node.js的特点</h2><p>1.它是一个Javascript运行环境<br>2.依赖于Chrome V8引擎进行代码解释<br>3.事件驱动<br>4.非阻塞I/O<br>5.轻量、可伸缩，适于实时数据交互应用<br>6.单进程，单线程</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -406,10 +633,6 @@
 
 
           
-  <div class="comments" id="comments">
-    
-  </div>
-
 
         </div>
         
@@ -429,17 +652,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -483,22 +697,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引入组件"><span class="nav-number">1.</span> <span class="nav-text">引入组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lint任务"><span class="nav-number">2.</span> <span class="nav-text">Lint任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sass任务"><span class="nav-number">3.</span> <span class="nav-text">Sass任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Script任务"><span class="nav-number">4.</span> <span class="nav-text">Script任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Default任务"><span class="nav-number">5.</span> <span class="nav-text">Default任务</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -612,10 +810,6 @@
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
-
-
 
   
 

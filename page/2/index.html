@@ -250,7 +250,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://zhangfengrui.github.io/2016/07/10/nodeJs/">
+    <link itemprop="mainEntityOfPage" href="https://zhangfengrui.github.io/2016/11/04/js-obj/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhang FengRui">
@@ -272,8 +272,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/07/10/nodeJs/" itemprop="url">
-                  Node Js
+                <a class="post-title-link" href="/2016/11/04/js-obj/" itemprop="url">
+                  JavaScript面向对象实现
                 </a>
               
             
@@ -289,8 +289,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-10T15:59:40+08:00">
-                2016-07-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-04T17:12:41+08:00">
+                2016-11-04
               </time>
             
 
@@ -326,10 +326,10 @@
       
         
           
-            <h2 id="什么是Node-js"><a href="#什么是Node-js" class="headerlink" title="什么是Node.js"></a>什么是Node.js</h2><p>当你看到node.js是是否以为它是一份javascript应用？事实上node.js采用c++语言编写，由javascript而成，是一个javascript的运行环境。采用c++编写是应为编写者想要尝试采用v8引擎。node.js是js的一个解析器。</p>
-<h2 id="Node-js和其他后端语言有什么不同"><a href="#Node-js和其他后端语言有什么不同" class="headerlink" title="Node.js和其他后端语言有什么不同"></a>Node.js和其他后端语言有什么不同</h2><p>举一个简单的例子，node.js和java的区别。<br>Node.js比Java更快 ：node.js开发快，运行的效率也算比较高，但是如果项目大了就容易乱，比较容易开发小型项目，而且javascript不是静态类型的语言，要到运行时才知道类型错误，所以写的多了之后免不了会出现光知道有错但是找不到哪儿错的情况，所以测试就得些的更好更详细。<br>java开发慢，但是如果项目大、复杂的话，用java就不容易乱，管理起来比node.js省。</p>
-<h2 id="我们为什么要使用Node-js"><a href="#我们为什么要使用Node-js" class="headerlink" title="我们为什么要使用Node.js"></a>我们为什么要使用Node.js</h2><p>Node.js的是旨在提供一种简单的构建可伸缩网络程序的方法。<br>Node.js是服务器端的 JavaScript 运行环境，它具有无阻塞(non-blocking)和事件驱动(event-driven)等的特色，Node.js 采用 V8 引擎，同样，Node.js 实现了类似 Apache 和 nginx 的web服务，让你可以通过它来搭建基于 JavaScript 的 Web App。<br>在NodeJS中，客户端和服务器互相发起通信，使他们能够自由地交换数据。与此形成鲜明对比的是典型传统的web响应模式，客户端总是要先启动通信。</p>
-<h2 id="Node-js的特点"><a href="#Node-js的特点" class="headerlink" title="Node.js的特点"></a>Node.js的特点</h2><p>1.它是一个Javascript运行环境<br>2.依赖于Chrome V8引擎进行代码解释<br>3.事件驱动<br>4.非阻塞I/O<br>5.轻量、可伸缩，适于实时数据交互应用<br>6.单进程，单线程</p>
+            <h2 id="一、生成对象实例的原始模型"><a href="#一、生成对象实例的原始模型" class="headerlink" title="一、生成对象实例的原始模型"></a>一、生成对象实例的原始模型</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> cat1 = &#123;&#125;;</div><div class="line">cat1.name = <span class="string">"大毛"</span>;</div><div class="line">cat1.color = <span class="string">"黄色"</span>;</div></pre></td></tr></table></figure>
+<h2 id="二、原始模型的改进"><a href="#二、原始模型的改进" class="headerlink" title="二、原始模型的改进"></a>二、原始模型的改进</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Cat</span>(<span class="params">name, color</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> &#123;</div><div class="line">        <span class="attr">name</span>: name,</div><div class="line">        <span class="attr">color</span>: color</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> cat1 = Cat(<span class="string">"大毛"</span>, <span class="string">"黄色"</span>);</div></pre></td></tr></table></figure>
+<h2 id="三、构造函数模式"><a href="#三、构造函数模式" class="headerlink" title="三、构造函数模式"></a>三、构造函数模式</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Cat</span>(<span class="params">name, color</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.name = name;</div><div class="line">    <span class="keyword">this</span>.color = color;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> cat1 = <span class="keyword">new</span> Cat(<span class="string">"大毛"</span>, <span class="string">"黄色"</span>);</div></pre></td></tr></table></figure>
+<h2 id="四、Prototype模式"><a href="#四、Prototype模式" class="headerlink" title="四、Prototype模式"></a>四、Prototype模式</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Cat</span>(<span class="params">name, color</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.name = name;</div><div class="line">    <span class="keyword">this</span>.color = color;</div><div class="line">&#125;</div><div class="line"></div><div class="line">Cat.prototype.type = <span class="string">"猫科动物"</span>;</div><div class="line">Cat.prototype.eat = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    alert(<span class="string">"吃老鼠"</span>);</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> cat1 = <span class="keyword">new</span> Cat(<span class="string">"大毛"</span>, <span class="string">"黄色"</span>);</div><div class="line">alert(cat1.type);</div></pre></td></tr></table></figure>
 
           
         
@@ -373,7 +373,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://zhangfengrui.github.io/2016/07/03/hello-world/">
+    <link itemprop="mainEntityOfPage" href="https://zhangfengrui.github.io/2016/10/28/js/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhang FengRui">
@@ -395,8 +395,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/07/03/hello-world/" itemprop="url">
-                  Hello World
+                <a class="post-title-link" href="/2016/10/28/js/" itemprop="url">
+                  JavaScript奇淫技巧
                 </a>
               
             
@@ -412,8 +412,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-03T14:59:30+08:00">
-                2016-07-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-28T17:04:00+08:00">
+                2016-10-28
               </time>
             
 
@@ -449,15 +449,135 @@
       
         
           
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"hello world"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+            <h2 id="1-数字处理"><a href="#1-数字处理" class="headerlink" title="1.数字处理"></a>1.数字处理</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 向下取整</span></div><div class="line"><span class="keyword">let</span> num1 = ~~<span class="number">1.2</span>; <span class="comment">// 1</span></div><div class="line"><span class="keyword">let</span> num2 = <span class="number">3.6</span>&gt;&gt;<span class="number">0</span>; <span class="comment">// 3</span></div><div class="line"><span class="keyword">let</span> num3 = <span class="number">10.67345</span>|<span class="number">0</span>; <span class="comment">// 10</span></div><div class="line"><span class="keyword">let</span> num4 = <span class="number">13.66454</span>^<span class="number">0</span>; <span class="comment">// 13</span></div><div class="line"></div><div class="line"><span class="comment">// 字符串转数字</span></div><div class="line"><span class="keyword">let</span> str = +<span class="string">'1231'</span>; <span class="comment">//1231 但是1231dsf 这样的不行 会是 NaN</span></div><div class="line"></div><div class="line"><span class="comment">// 验证是否是数字:</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isNumber</span>(<span class="params">n</span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> !<span class="built_in">isNaN</span>(<span class="built_in">parseFloat</span>(n)) &amp;&amp; <span class="built_in">isFinite</span>(n);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 浮点计算的问题</span></div><div class="line"><span class="number">0.1</span> + <span class="number">0.2</span> === <span class="number">0.3</span> <span class="comment">// is false</span></div><div class="line"><span class="number">9007199254740992</span> + <span class="number">1</span> <span class="comment">// is equal to 9007199254740992</span></div><div class="line"><span class="number">9007199254740992</span> + <span class="number">2</span> <span class="comment">// is equal to 9007199254740994</span></div><div class="line"><span class="comment">/* 因为0.1+0.2等于0.30000000000000004。JavaScript的数字都遵循IEEE 754标准构建，在内部都是64位浮点小数表示</span></div><div class="line">可以通过使用toFixed()和toPrecision()来解决这个问题。*/</div></pre></td></tr></table></figure>
+<h2 id="2-日期转数字"><a href="#2-日期转数字" class="headerlink" title="2.日期转数字"></a>2.日期转数字</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> num = + <span class="keyword">new</span> <span class="built_in">Date</span>();</div></pre></td></tr></table></figure>
+<h2 id="3-随机码"><a href="#3-随机码" class="headerlink" title="3.随机码"></a>3.随机码</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">Math</span>.random().toString(<span class="number">16</span>).substring(<span class="number">2</span>) <span class="comment">// 14 位</span></div><div class="line"><span class="built_in">Math</span>.random().toString(<span class="number">36</span>).substring(<span class="number">2</span>); <span class="comment">// 11 位</span></div><div class="line"></div><div class="line"><span class="comment">// 获取数组的随机元素</span></div><div class="line"><span class="keyword">let</span> items = [<span class="number">12</span>, <span class="number">548</span> , <span class="string">'a'</span> , <span class="number">2</span> , <span class="number">5478</span> , <span class="string">'foo'</span> , <span class="number">8852</span>, , <span class="string">'Doe'</span> , <span class="number">2145</span> , <span class="number">119</span>];</div><div class="line">items[<span class="built_in">Math</span>.random()*items.length|<span class="number">0</span>] <span class="comment">// items[Math.floor(Math.random() * items.length)]</span></div><div class="line"></div><div class="line"><span class="comment">// 获取指定范围内的随机数</span></div><div class="line">(<span class="built_in">Math</span>.random()*(max-min+<span class="number">1</span>))|<span class="number">0</span> + min; <span class="comment">// Math.floor(Math.random() * (max - min + 1)) + min;</span></div></pre></td></tr></table></figure>
+<h2 id="4-条件判断"><a href="#4-条件判断" class="headerlink" title="4.条件判断"></a>4.条件判断</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> a = b &amp;&amp; <span class="number">1</span>;</div><div class="line"><span class="comment">//相当于:</span></div><div class="line"><span class="keyword">if</span> (b) &#123;</div><div class="line">  a = <span class="number">1</span>;</div><div class="line">&#125;<span class="keyword">else</span> &#123;</div><div class="line">  a = b;</div><div class="line">&#125;</div><div class="line"><span class="keyword">let</span> a = b || <span class="number">1</span>;</div><div class="line"><span class="comment">//相当于</span></div><div class="line"><span class="keyword">if</span> (b) &#123;</div><div class="line">  a = b;</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">  a = <span class="number">1</span>;</div><div class="line">&#125;</div><div class="line">underfined、<span class="literal">null</span>、<span class="number">0</span>、<span class="literal">false</span>、<span class="literal">NaN</span>、空字符串的逻辑结果均为<span class="literal">false</span></div></pre></td></tr></table></figure>
+<h2 id="5-判断IE"><a href="#5-判断IE" class="headerlink" title="5.判断IE"></a>5.判断IE</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> ie = <span class="comment">/*@cc_on !@*/</span><span class="literal">false</span>;</div><div class="line"><span class="keyword">let</span> ie8 = <span class="built_in">document</span>.documentMode==<span class="number">8</span> &amp;&amp; !!<span class="built_in">window</span>.ActiveXObject;</div></pre></td></tr></table></figure>
+<h2 id="6-数组处理"><a href="#6-数组处理" class="headerlink" title="6.数组处理"></a>6.数组处理</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> arr = [<span class="number">12</span> , <span class="number">222</span> , <span class="number">1000</span> ];</div><div class="line">验证是否是数组:</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isArray</span>(<span class="params">obj</span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="built_in">Object</span>.prototype.toString.call(obj) === <span class="string">'[object Array]'</span> ;</div><div class="line">&#125;</div><div class="line">求数组的最大值和最小值</div><div class="line"><span class="built_in">Math</span>.max.apply(<span class="literal">null</span>, [<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">8</span>]) <span class="comment">// 8  IE8 会出错 (Math.min.apply(null, [1,3,5,8]))</span></div><div class="line">或者</div><div class="line"><span class="keyword">let</span> arr = [<span class="number">3</span>,<span class="number">5</span>,<span class="number">79</span>,<span class="number">4</span>];</div><div class="line"><span class="built_in">Math</span>.max(...arr); <span class="comment">// 79 Math.min(...arr);</span></div><div class="line">清空数组</div><div class="line">arr.length = <span class="number">0</span>;</div></pre></td></tr></table></figure>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><h2 id="JSTiPs"><a href="#JSTiPs" class="headerlink" title="JSTiPs"></a><a href="http://www.jstips.co/" target="_blank" rel="external">JSTiPs</a></h2>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://zhangfengrui.github.io/2016/10/14/webpack-plugin/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang FengRui">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Do It">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/10/14/webpack-plugin/" itemprop="url">
+                  webpack插件解读
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-14T17:00:44+08:00">
+                2016-10-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="koa-proxy"><a href="#koa-proxy" class="headerlink" title="koa-proxy"></a>koa-proxy</h2><p>proxy英文翻译为代理，可以通过这个插件代理一个指定的url。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">app.get(<span class="string">'index.js'</span>, proxy(&#123;</div><div class="line">  <span class="attr">url</span>: <span class="string">'http://alicdn.com/index.js'</span></div><div class="line">&#125;));</div></pre></td></tr></table></figure></p>
+<p>可以将请求路径指定到相应的key/value object。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">app.get(<span class="string">'index.js'</span>, proxy(&#123;</div><div class="line">  <span class="attr">host</span>: <span class="string">'http://alicdn.com'</span>,</div><div class="line">  <span class="attr">map</span>: &#123;</div><div class="line">    <span class="string">'index.js'</span>: <span class="string">'index-1.js'</span></div><div class="line">  &#125;</div><div class="line">&#125;));</div></pre></td></tr></table></figure></p>
+<p>可以指定一个可将你的请求指定到目标的函数。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">app.get(<span class="string">'index.js'</span>, proxy(&#123;</div><div class="line">  <span class="attr">host</span>: <span class="string">'http://alicdn.com'</span>,</div><div class="line">  <span class="attr">map</span>: <span class="function"><span class="keyword">function</span>(<span class="params">path</span>) </span>&#123; <span class="keyword">return</span> <span class="string">'public/'</span> + path; &#125;</div><div class="line">&#125;));</div></pre></td></tr></table></figure></p>
+<p>您可以指定匹配条件以将代理调用限制到给定路径<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">app.use(proxy(&#123;</div><div class="line">  <span class="attr">host</span>:  <span class="string">'http://alicdn.com'</span>, <span class="comment">// proxy alicdn.com...</span></div><div class="line">  match: <span class="regexp">/^\/static\//</span>        <span class="comment">// ...just the /static folder</span></div><div class="line">&#125;));</div></pre></td></tr></table></figure></p>
 
           
         
@@ -496,7 +616,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -541,7 +661,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

@@ -250,6 +250,157 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://zhangfengrui.github.io/2016/12/16/webKY/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang FengRui">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Do It">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/12/16/webKY/" itemprop="url">
+                  web跨域解决方案
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-16T15:36:25+08:00">
+                2016-12-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在做前端开发时，我们时常使用ajax与服务器通信获取资源，享受ajax便利的同时，也知道它有限制：跨域安全限制，即同源策略。</p>
+<blockquote>
+<p>同源策略（SOP）,核心是确保不同源提供的文件之间是相互独立的。<br>默认情况下，XHR对象是能访问与包含它的页面处于同一域中的资源，这种限制可以防御某些恶意攻击，但同时也带来很多不便。</p>
+</blockquote>
+<p>下面主要对常见的跨域问题提供解决方案。</p>
+<h3 id="常见解决跨域问题的方案"><a href="#常见解决跨域问题的方案" class="headerlink" title="常见解决跨域问题的方案"></a>常见解决跨域问题的方案</h3><p>在web开发中，解决跨域问题最常见的方法有：<br>1.document.domain+iframe（子域名代理）<br>2.jsonp实现跨域<br>3.CORS跨域资源共享<br>4.postMessage实现跨域</p>
+<p>接下来是对实现方式的具体描述：</p>
+<h3 id="document-domain-iframe-子域名代理"><a href="#document-domain-iframe-子域名代理" class="headerlink" title="document.domain + iframe(子域名代理)"></a>document.domain + iframe(子域名代理)</h3><p>对于主域相同而子域不同的情况，可以通过配置document.domain的办法来解决。如：对于两个文件<code>a.com/a.html</code>和<code>blog.a.com.b.html</code>均加上设置document.domain=’a.com’，然后在a.html文件中创建一个iframe，通过iframe两个js文件即可交互数据：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// www.a.com/a.html</span></div><div class="line"><span class="built_in">document</span>.document = <span class="string">'a.com'</span>;</div><div class="line"><span class="keyword">var</span> iframe = <span class="built_in">document</span>.createElement(<span class="string">'iframe'</span>); </div><div class="line">iframe.src = <span class="string">'http://blog.a.com/b.html'</span>;</div><div class="line"><span class="built_in">document</span>.body.appendChild(iframe);</div><div class="line">iframe.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> doc = iframe.contentDocument || iframe.contentWindow.document;</div><div class="line">    <span class="comment">// 在这里操纵b.html</span></div><div class="line">    <span class="built_in">console</span>.log(doc);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在<code>blog.a.com/b.html</code>内编写代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// blog.a.com/b.html</span></div><div class="line"><span class="built_in">document</span>.domain = <span class="string">'a.com'</span></div></pre></td></tr></table></figure></p>
+<p>备注：某一页的domin默认等于window.location.hostname.主域名是不带www的域名，例如a.com，主域名前面带前缀的通常都为二级域名，例如<code>blog.a.com</code>其实是二级域名。domain只能设置为主域名，不可以在<code>blog.a.com</code>中将domain设置为<code>test.a.com</code>。</p>
+<p>问题：<br>1、安全性，当一个站点（b.a.com）被攻击后，另一个站点（c.a.com）会引起安全漏洞<br>2、如果一个页面中引入多个iframe，要想能够操作所有iframe，必须都得设置相同domain</p>
+<h3 id="jsonp实现跨域"><a href="#jsonp实现跨域" class="headerlink" title="jsonp实现跨域"></a>jsonp实现跨域</h3><p>JSONP，即带填充的JSON，可以在JavaScript中绕过同源策略，发起跨域HTTP请求。</p>
+<blockquote>
+<p>JSONP，一个无关标准，使用脚本标签来跨域获取数据的技术。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//http://blog-resource.bj.bcebos.com/files/2016/03/info.js</span></div><div class="line"><span class="keyword">var</span> jsonpData = &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'jsonp'</span>,</div><div class="line">    <span class="attr">title</span>: <span class="string">'JSONP data'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+</blockquote>
+<p>动态的回调函数</p>
+<p>JSONP通过script元素加载JSON，通过脚本URL的查询字符串，服务器将相应封装在回调函数中，而回调函数名由请求者在URL查询字符串中给出，此回调函数，即填充。填充可以是任何有效的JavaScript表达式，最常见的是变量和回调函数。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> jsonpCallback = <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'收到的数据为：'</span> + <span class="built_in">JSON</span>.stringify(data));</div><div class="line">&#125;;</div><div class="line"><span class="keyword">var</span> script = <span class="built_in">document</span>.createElementI(<span class="string">'script'</span>);</div><div class="line">script.async = <span class="literal">true</span>;</div><div class="line">script.src = <span class="string">'http://blog-resource.bj.bcebos.com/files/2016/03/info2.js?callback=jsonpCallback'</span>;</div><div class="line"><span class="built_in">document</span>.body.appendChild(script);</div></pre></td></tr></table></figure></p>
+<p>在全局作用域下定义回调函数，当HTML DOM中加入script标签时发起请求，服务端可以通过URL获取回调函数名，并生成返回如下类似内容：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">jsonpCallback(&#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'jsonp'</span>,</div><div class="line">    <span class="attr">title</span>: <span class="string">'JSONP data'</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>jQuery利用Jsonp发送跨域请求<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">$.ajax(&#123;</div><div class="line">    <span class="attr">url</span>: <span class="string">''</span>,</div><div class="line">    <span class="attr">type</span>: <span class="string">'GET'</span>,</div><div class="line">    <span class="attr">dataType</span>: <span class="string">'jsonp'</span>,</div><div class="line">    <span class="attr">data</span>: mydata,</div><div class="line">    <span class="attr">timeout</span>: <span class="number">5000</span>,</div><div class="line">    <span class="attr">success</span>: <span class="function"><span class="keyword">function</span>(<span class="params">json</span>) </span>&#123;</div><div class="line">        <span class="keyword">if</span>(jsonp.actionErrors.length !=<span class="number">0</span>) &#123;</div><div class="line">            <span class="built_in">console</span>.log(json.actionErrors);</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">complete</span>: <span class="function"><span class="keyword">function</span>(<span class="params">XMLHttpRequest, textStatus</span>) </span>&#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<p>JSONP可以说是最简单的解决跨域请求的方案，但JSONP只支持GET请求，且所能携带信息量有限，对于需要使用POST等请求方法或数据量比较大的时候就不适合使用JSON。</p>
+<h3 id="跨域资源共享（CORS）"><a href="#跨域资源共享（CORS）" class="headerlink" title="跨域资源共享（CORS）"></a>跨域资源共享（CORS）</h3><p>跨域资源共享定义了浏览器和服务器如何通过可控方式进行跨域通信。CORS通过添加特殊HTTP头信息以允许浏览器判断请求是成功还是失败。几乎所有现代浏览器都支持CORS。</p>
+<p>1、HTTP请求HTTP请求时，支持CORS的浏览器会通过，添加额外Origin头信息指定请求源，其值包括请求协议、域名、端口。如：<br>Origin：codingplayboy.com<br>若请求头中无Origin信息，服务器将不返回任何CORS头信息。<br>服务端就收请求时会检查头信息确定是否接受请求：若接受请求，必须返回一个包含Access-Control-Allow-Originxiang相应头，其值与请求头Origin值相同，如：<br>Access-Control—Allow—Origin：codingplayboy.com<br>对于公共资源且允许任何源请求数据，服务端通常返回该值为通配符<em>，如：<br>Access-Control-Allow-Origin:</em><br>浏览器接收到服务器HTTP相应时，首先会检查Access-Control-Allow-Origin的值，只有当值存在且同Origin匹配，才继续处理该请求。<br>下面是一段使用CORS跨域请求的代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createCORS</span>(<span class="params">url, method</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span>(<span class="keyword">typeof</span> XMLHttpRequest === <span class="string">'undefined'</span>) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 标准浏览器</span></div><div class="line">    <span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</div><div class="line">    <span class="keyword">if</span>(<span class="string">'withCredentials'</span> <span class="keyword">in</span> xhr) &#123;</div><div class="line">        xhr.open(method, url, <span class="literal">true</span>);</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span>(<span class="keyword">typeof</span> XDomainRequest !== <span class="string">'undefined'</span>) &#123;</div><div class="line">        <span class="comment">// IE</span></div><div class="line">        xhr = <span class="keyword">new</span> XDomainRequest();</div><div class="line">        xhr.open(method, <span class="literal">null</span>);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="comment">// 不支持CORS</span></div><div class="line">        xhr = <span class="literal">null</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> xhr;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> req = createCORS(<span class="string">'http://blog.codingplayboy.com'</span>, <span class="string">'GET'</span>);</div><div class="line"><span class="keyword">if</span>(req) &#123;</div><div class="line">    req.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line"></div><div class="line">    &#125;;</div><div class="line">    req.send();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>2、Cookie及HTTP认证头<br>我们还需要知道不同于普通的HTTP请求，使用CORS发送请求时，默认情况下，浏览器不会携带任何Cookie和HTTP认证头等识别信息，只有当我们将XMLHttpRequest对象的withCredentials属性值设为true，才在该请求发送时添加额外识别信息。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</div><div class="line">        xhr.withCredentials = <span class="literal">true</span>;</div></pre></td></tr></table></figure></p>
+<p>若服务器需要识别信息，然而XDomainRequest不支持withCredentials属性，于是IE8，IE9并不支持请求时包含识别信息。<br>3、预检请求<br>使用CORS时，若请求方法不是GET，POST或HEAD，又或者使用了自定义HTTP头，浏览器将发起预检请求。</p>
+<blockquote>
+<p>预检请求是一个服务端认证机制，在执行请求之前会判断该请求是否合法。<br>发送复杂请求时，浏览器会将原始请求的方法和请求头作为预检请求的信息发送给服务器，服务器需要解决是否接受该请求并相应，预检请求通常是使用一种OPTIONS的HTTP方法。</p>
+</blockquote>
+<p>客户端发起复杂请求时，会先发起预检，携带以下头信息：</p>
+<p>请求头描述Origin请求源Access-Control-Request-Method请求方法（HTTP方法）Access-Control—Request-Headers请求自定义头（以逗号分割）<br>服务器返回的响应头：</p>
+<p>响应头描述Access-Control-Allow-Origin允许的请求源（与请求头Origin匹配）Access-Control-Allow-Methods允许的请求方法（以逗号分隔）Access-Control-Allow-Headers允许的头信息（以逗号分隔）Access-Control-Max-Age预检请求的缓存时间（单位：秒）Access-Control-Allow-Credentials指定请求是否支持认证信息（可选）<br>客户端接收到服务端的响应后，会使用之前声明的HTTP方法和请求头发送真正的请求。</p>
+<p>预检请求会被浏览器缓存，缓存时间为Access-Control-Max-Age值，缓存时间内，后续相同类型的请求不再发起重复的预检请求。IE8、IE9均不支持预检请求。</p>
+<h3 id="HTML5-postMessage"><a href="#HTML5-postMessage" class="headerlink" title="HTML5 postMessage"></a>HTML5 postMessage</h3><p>HTML5的window.postMessage为浏览器带来了一个安全的、基于事件的消息API。与之前的子域名代理通过iframe跨子域通信不同，使用postMessage不再是直接访问一个文芳的属性和方法，而是向文档发消息然后等待响应，这要求形成一条双向的通信通道。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://zhangfengrui.github.io/2016/11/25/js-guid/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -503,1010 +654,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://zhangfengrui.github.io/2016/11/04/js-obj/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang FengRui">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Just Do It">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/11/04/js-obj/" itemprop="url">
-                  JavaScript面向对象实现
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-04T17:12:41+08:00">
-                2016-11-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="一、生成对象实例的原始模型"><a href="#一、生成对象实例的原始模型" class="headerlink" title="一、生成对象实例的原始模型"></a>一、生成对象实例的原始模型</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> cat1 = &#123;&#125;;</div><div class="line">cat1.name = <span class="string">"大毛"</span>;</div><div class="line">cat1.color = <span class="string">"黄色"</span>;</div></pre></td></tr></table></figure>
-<h2 id="二、原始模型的改进"><a href="#二、原始模型的改进" class="headerlink" title="二、原始模型的改进"></a>二、原始模型的改进</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Cat</span>(<span class="params">name, color</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> &#123;</div><div class="line">        <span class="attr">name</span>: name,</div><div class="line">        <span class="attr">color</span>: color</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> cat1 = Cat(<span class="string">"大毛"</span>, <span class="string">"黄色"</span>);</div></pre></td></tr></table></figure>
-<h2 id="三、构造函数模式"><a href="#三、构造函数模式" class="headerlink" title="三、构造函数模式"></a>三、构造函数模式</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Cat</span>(<span class="params">name, color</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.name = name;</div><div class="line">    <span class="keyword">this</span>.color = color;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> cat1 = <span class="keyword">new</span> Cat(<span class="string">"大毛"</span>, <span class="string">"黄色"</span>);</div></pre></td></tr></table></figure>
-<h2 id="四、Prototype模式"><a href="#四、Prototype模式" class="headerlink" title="四、Prototype模式"></a>四、Prototype模式</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Cat</span>(<span class="params">name, color</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.name = name;</div><div class="line">    <span class="keyword">this</span>.color = color;</div><div class="line">&#125;</div><div class="line"></div><div class="line">Cat.prototype.type = <span class="string">"猫科动物"</span>;</div><div class="line">Cat.prototype.eat = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    alert(<span class="string">"吃老鼠"</span>);</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> cat1 = <span class="keyword">new</span> Cat(<span class="string">"大毛"</span>, <span class="string">"黄色"</span>);</div><div class="line">alert(cat1.type);</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://zhangfengrui.github.io/2016/10/28/js/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang FengRui">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Just Do It">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/10/28/js/" itemprop="url">
-                  JavaScript奇淫技巧
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-28T17:04:00+08:00">
-                2016-10-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="1-数字处理"><a href="#1-数字处理" class="headerlink" title="1.数字处理"></a>1.数字处理</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 向下取整</span></div><div class="line"><span class="keyword">let</span> num1 = ~~<span class="number">1.2</span>; <span class="comment">// 1</span></div><div class="line"><span class="keyword">let</span> num2 = <span class="number">3.6</span>&gt;&gt;<span class="number">0</span>; <span class="comment">// 3</span></div><div class="line"><span class="keyword">let</span> num3 = <span class="number">10.67345</span>|<span class="number">0</span>; <span class="comment">// 10</span></div><div class="line"><span class="keyword">let</span> num4 = <span class="number">13.66454</span>^<span class="number">0</span>; <span class="comment">// 13</span></div><div class="line"></div><div class="line"><span class="comment">// 字符串转数字</span></div><div class="line"><span class="keyword">let</span> str = +<span class="string">'1231'</span>; <span class="comment">//1231 但是1231dsf 这样的不行 会是 NaN</span></div><div class="line"></div><div class="line"><span class="comment">// 验证是否是数字:</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isNumber</span>(<span class="params">n</span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> !<span class="built_in">isNaN</span>(<span class="built_in">parseFloat</span>(n)) &amp;&amp; <span class="built_in">isFinite</span>(n);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 浮点计算的问题</span></div><div class="line"><span class="number">0.1</span> + <span class="number">0.2</span> === <span class="number">0.3</span> <span class="comment">// is false</span></div><div class="line"><span class="number">9007199254740992</span> + <span class="number">1</span> <span class="comment">// is equal to 9007199254740992</span></div><div class="line"><span class="number">9007199254740992</span> + <span class="number">2</span> <span class="comment">// is equal to 9007199254740994</span></div><div class="line"><span class="comment">/* 因为0.1+0.2等于0.30000000000000004。JavaScript的数字都遵循IEEE 754标准构建，在内部都是64位浮点小数表示</span></div><div class="line">可以通过使用toFixed()和toPrecision()来解决这个问题。*/</div></pre></td></tr></table></figure>
-<h2 id="2-日期转数字"><a href="#2-日期转数字" class="headerlink" title="2.日期转数字"></a>2.日期转数字</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> num = + <span class="keyword">new</span> <span class="built_in">Date</span>();</div></pre></td></tr></table></figure>
-<h2 id="3-随机码"><a href="#3-随机码" class="headerlink" title="3.随机码"></a>3.随机码</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">Math</span>.random().toString(<span class="number">16</span>).substring(<span class="number">2</span>) <span class="comment">// 14 位</span></div><div class="line"><span class="built_in">Math</span>.random().toString(<span class="number">36</span>).substring(<span class="number">2</span>); <span class="comment">// 11 位</span></div><div class="line"></div><div class="line"><span class="comment">// 获取数组的随机元素</span></div><div class="line"><span class="keyword">let</span> items = [<span class="number">12</span>, <span class="number">548</span> , <span class="string">'a'</span> , <span class="number">2</span> , <span class="number">5478</span> , <span class="string">'foo'</span> , <span class="number">8852</span>, , <span class="string">'Doe'</span> , <span class="number">2145</span> , <span class="number">119</span>];</div><div class="line">items[<span class="built_in">Math</span>.random()*items.length|<span class="number">0</span>] <span class="comment">// items[Math.floor(Math.random() * items.length)]</span></div><div class="line"></div><div class="line"><span class="comment">// 获取指定范围内的随机数</span></div><div class="line">(<span class="built_in">Math</span>.random()*(max-min+<span class="number">1</span>))|<span class="number">0</span> + min; <span class="comment">// Math.floor(Math.random() * (max - min + 1)) + min;</span></div></pre></td></tr></table></figure>
-<h2 id="4-条件判断"><a href="#4-条件判断" class="headerlink" title="4.条件判断"></a>4.条件判断</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> a = b &amp;&amp; <span class="number">1</span>;</div><div class="line"><span class="comment">//相当于:</span></div><div class="line"><span class="keyword">if</span> (b) &#123;</div><div class="line">  a = <span class="number">1</span>;</div><div class="line">&#125;<span class="keyword">else</span> &#123;</div><div class="line">  a = b;</div><div class="line">&#125;</div><div class="line"><span class="keyword">let</span> a = b || <span class="number">1</span>;</div><div class="line"><span class="comment">//相当于</span></div><div class="line"><span class="keyword">if</span> (b) &#123;</div><div class="line">  a = b;</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">  a = <span class="number">1</span>;</div><div class="line">&#125;</div><div class="line">underfined、<span class="literal">null</span>、<span class="number">0</span>、<span class="literal">false</span>、<span class="literal">NaN</span>、空字符串的逻辑结果均为<span class="literal">false</span></div></pre></td></tr></table></figure>
-<h2 id="5-判断IE"><a href="#5-判断IE" class="headerlink" title="5.判断IE"></a>5.判断IE</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> ie = <span class="comment">/*@cc_on !@*/</span><span class="literal">false</span>;</div><div class="line"><span class="keyword">let</span> ie8 = <span class="built_in">document</span>.documentMode==<span class="number">8</span> &amp;&amp; !!<span class="built_in">window</span>.ActiveXObject;</div></pre></td></tr></table></figure>
-<h2 id="6-数组处理"><a href="#6-数组处理" class="headerlink" title="6.数组处理"></a>6.数组处理</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> arr = [<span class="number">12</span> , <span class="number">222</span> , <span class="number">1000</span> ];</div><div class="line">验证是否是数组:</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isArray</span>(<span class="params">obj</span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="built_in">Object</span>.prototype.toString.call(obj) === <span class="string">'[object Array]'</span> ;</div><div class="line">&#125;</div><div class="line">求数组的最大值和最小值</div><div class="line"><span class="built_in">Math</span>.max.apply(<span class="literal">null</span>, [<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">8</span>]) <span class="comment">// 8  IE8 会出错 (Math.min.apply(null, [1,3,5,8]))</span></div><div class="line">或者</div><div class="line"><span class="keyword">let</span> arr = [<span class="number">3</span>,<span class="number">5</span>,<span class="number">79</span>,<span class="number">4</span>];</div><div class="line"><span class="built_in">Math</span>.max(...arr); <span class="comment">// 79 Math.min(...arr);</span></div><div class="line">清空数组</div><div class="line">arr.length = <span class="number">0</span>;</div></pre></td></tr></table></figure>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><h2 id="JSTiPs"><a href="#JSTiPs" class="headerlink" title="JSTiPs"></a><a href="http://www.jstips.co/" target="_blank" rel="external">JSTiPs</a></h2>
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://zhangfengrui.github.io/2016/10/14/webpack-plugin/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang FengRui">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Just Do It">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/10/14/webpack-plugin/" itemprop="url">
-                  webpack插件解读
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-14T17:00:44+08:00">
-                2016-10-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="koa-proxy"><a href="#koa-proxy" class="headerlink" title="koa-proxy"></a>koa-proxy</h2><p>proxy英文翻译为代理，可以通过这个插件代理一个指定的url。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">app.get(<span class="string">'index.js'</span>, proxy(&#123;</div><div class="line">  <span class="attr">url</span>: <span class="string">'http://alicdn.com/index.js'</span></div><div class="line">&#125;));</div></pre></td></tr></table></figure></p>
-<p>可以将请求路径指定到相应的key/value object。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">app.get(<span class="string">'index.js'</span>, proxy(&#123;</div><div class="line">  <span class="attr">host</span>: <span class="string">'http://alicdn.com'</span>,</div><div class="line">  <span class="attr">map</span>: &#123;</div><div class="line">    <span class="string">'index.js'</span>: <span class="string">'index-1.js'</span></div><div class="line">  &#125;</div><div class="line">&#125;));</div></pre></td></tr></table></figure></p>
-<p>可以指定一个可将你的请求指定到目标的函数。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">app.get(<span class="string">'index.js'</span>, proxy(&#123;</div><div class="line">  <span class="attr">host</span>: <span class="string">'http://alicdn.com'</span>,</div><div class="line">  <span class="attr">map</span>: <span class="function"><span class="keyword">function</span>(<span class="params">path</span>) </span>&#123; <span class="keyword">return</span> <span class="string">'public/'</span> + path; &#125;</div><div class="line">&#125;));</div></pre></td></tr></table></figure></p>
-<p>您可以指定匹配条件以将代理调用限制到给定路径<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">app.use(proxy(&#123;</div><div class="line">  <span class="attr">host</span>:  <span class="string">'http://alicdn.com'</span>, <span class="comment">// proxy alicdn.com...</span></div><div class="line">  match: <span class="regexp">/^\/static\//</span>        <span class="comment">// ...just the /static folder</span></div><div class="line">&#125;));</div></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://zhangfengrui.github.io/2016/09/24/webpackProperty/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang FengRui">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Just Do It">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/09/24/webpackProperty/" itemprop="url">
-                  Webpack属性总结
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-24T16:59:57+08:00">
-                2016-09-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="webpack-简介"><a href="#webpack-简介" class="headerlink" title="webpack 简介"></a>webpack 简介</h2><p>webpack是一个模块打包工具。它使得模块相互依赖并且可构建等价于这些模块的静态资源。相比于已经存在的模块打包器，webpack的开发动机是实现代码分包和通过模块化完成代码的威风集成。webpack可以根据项目需求合并代码，并且支持按需加载。<br>webpack的实现目标是：<br>1.拆分依赖树为多个按需加载的chunk<br>2.保证快速首屏加载<br>3.每种静态资源都可以成为模块<br>4.能够将第三方库视作一个模块来处理<br>5.能够制定模块打包器的几乎任何部分<br>6.适合大型项目</p>
-<h1 id="基本属性"><a href="#基本属性" class="headerlink" title="基本属性"></a>基本属性</h1><h2 id="entry"><a href="#entry" class="headerlink" title="entry"></a>entry</h2><p>entry英文翻译为入口，其实就是模块的入口<br>1.entry的值是字符串，这个字符串对应的模块会在启动的时候加载<br>2.entry的值是数组，这个数组内所有模块会在启动的时候加载，数组的最后一个元素作为export<br>3.entry的值是对象，可以构建多个bundle</p>
-<h2 id="output"><a href="#output" class="headerlink" title="output"></a>output</h2><p>对应entry的输出规则，通过output对象来实现<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">output: &#123;</div><div class="line">  path: __dirname + &apos;/build&apos;,</div><div class="line">  filename: &apos;[name].js&apos;.</div><div class="line">  publicPath: &apos;/asstes/&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>path: 指定输出文件路径<br>filename: 输出文件名<br>publicPath: 设置为想要的资源访问路径。访问时，则需要通过类似<code>http://localhost:8080/asstes/index.js</code>来访问资源，如果没有设置，则默认从站点根目录加载</p>
-<h2 id="loader"><a href="#loader" class="headerlink" title="loader"></a>loader</h2><p>loader是wenbpack中比较重要的部分，是处理各类资源的执行者。是一系列的函数，将资源中的代码作为参数，然后返回新的代码。你可以用loader告诉webpack可以加载哪些文件，或者不加载哪些文件。<br>Loader的特点<br>1.可以链式执行。它们在一个管道中被提交，只需要保证最后的loader返回JavaScript即可，其他loader可以返回任意方便下一个loader处理的内容。<br>2.可以异步或者同步执行<br>3.运行在Node.js中，可以做几乎任何事儿<br>4.可以接收query参数，用于向loader传递参数<br>5.配置中可与正则/扩展结合使用<br>6.可以在npm中发布并使用<br>7.除了main,其他模块可以导出成loader<br>8.可以通过配置调入<br>9.和插件（plugins）配合可获得更多功能<br>10.可生成其他格式文件</p>
-<h2 id="loader支持多种类型"><a href="#loader支持多种类型" class="headerlink" title="loader支持多种类型"></a>loader支持多种类型</h2><p>常用的xxx-loader类型有：html、css、jsx、coffee、jade、less、sass、style</p>
-<h2 id="配置loader"><a href="#配置loader" class="headerlink" title="配置loader"></a>配置loader</h2><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">modules: &#123;</div><div class="line">  loaders: [&#123;</div><div class="line">    test: /\.js$,</div><div class="line">    exclude: /node_modules,</div><div class="line">    loaders: 'xxx-loader?a=x&amp;b=y'</div><div class="line">  &#125;]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>test: 匹配希望处理文件的路径<br>exclude: 匹配不希望处理文件的路径<br>loaders: xxx-loader可以简写为xxx，？后以query方式传递给loader参数</p>
-<h3 id="处理图片、字体等文件"><a href="#处理图片、字体等文件" class="headerlink" title="处理图片、字体等文件"></a>处理图片、字体等文件</h3><p>在css中或者js做集中，都会涉及到require图片的情况，webpack可以内联图片地址到打包js中并且通过require()返回图片路径。当然,不只是图片，还有css种用到的iconfont。特殊情况用到的flash等，都可以相似处理。这里，需要用到url-loader或file-loader。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://zhangfengrui.github.io/2016/09/10/reactCycle/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang FengRui">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Just Do It">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/09/10/reactCycle/" itemprop="url">
-                  React生命周期
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-10T16:27:18+08:00">
-                2016-09-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 初始化前立即调用，服务器和客户端知道调用一次。如果在这个方法内调用setState， render()将会感知到更新后的state，将会执行仅一次，尽管state改变了。</span></div><div class="line">componentWillMount() &#123;</div><div class="line">    <span class="keyword">this</span>.setState(&#123;</div><div class="line">        <span class="attr">str</span>: <span class="string">"调用前改变了一下state"</span></div><div class="line">    &#125;);</div><div class="line">    alert(<span class="string">"初始化前componentWillMount被调用"</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 在初始化渲染执行后立刻调用一次，仅客户端调用（服务器断不会调用）。在生命周期中的这个时间点，组件拥有一个DOM展现，你可以通过this.getDOMNode()来获取相应的DOM节点。</span></div><div class="line">componentDidMount() &#123;</div><div class="line">    alert(<span class="string">"渲染后执行componentDidMount"</span>);</div><div class="line">    <span class="keyword">this</span>.setState(&#123;</div><div class="line">        <span class="attr">str</span>: <span class="string">"did后改变了一下"</span></div><div class="line">    &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 在组件接收到新的props的时候调用。在初始化选的时候，此方法不会调用。用此函数可以作为react在prop传入之后，render()渲染之前更新state的机会。老的props可以通过this.props获取到。在函数中调用this.setState()将不会引起第二次渲染。</span></div><div class="line">componentWillReceiveProp(nextProps) &#123;</div><div class="line">    alert(<span class="string">"接收新的props之后调用componentWillReceiveProp"</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 在接收到新的state或者props，将要渲染之前调用。该方法在初始化渲染的时候不会调用，在使用forceUpdate方法的时候也不会调用。如果确定新的state或者props不回导致组件更新，则应该返回false</span></div><div class="line">shouldComponentUpdate() &#123;</div><div class="line">    alert(<span class="string">"接收state或者props之前调用shouldComponentUpdate"</span>);</div><div class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 在接受到新的props或者state之前立刻调用。在初始化渲染的时候该方法不会被调用。使用该方法做一些更新之前的准备工作。</span></div><div class="line">componentWillUpdate() &#123;</div><div class="line">    alert(<span class="string">"props更新之前调用componcomponentWillUpdate"</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 在组件的更新已经同步到DOM中之后立刻被调用。该方法不会再初始化渲染的时候调用。使用该方法可以在组件更新之后操作DOM元素。</span></div><div class="line">componentDidUpdate() &#123;</div><div class="line">    alert(<span class="string">"组件更新之后调用componentDidUpdate"</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 从DOM中移除的时候立刻被调用。在该方法中执行任何必要的清理，比如无效的定时器，或者清除在componentDidMount中创建的DOM元素。</span></div><div class="line">componentWillUnmount() &#123;</div><div class="line">    alert(<span class="string">"卸载的时候调用componentWillUnmount"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://zhangfengrui.github.io/2016/08/28/redux/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang FengRui">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Just Do It">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/28/redux/" itemprop="url">
-                  Redux
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-28T16:21:04+08:00">
-                2016-08-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="三大原则"><a href="#三大原则" class="headerlink" title="三大原则"></a>三大原则</h1><h2 id="单一数据原则"><a href="#单一数据原则" class="headerlink" title="单一数据原则"></a>单一数据原则</h2><p>整个应用的state被储存在一棵object tree中，并且这个object tree只存在于唯一一个store中</p>
-<h2 id="state是只读的"><a href="#state是只读的" class="headerlink" title="state是只读的"></a>state是只读的</h2><p>action是一个用于描述已发生事件的普通对象。视图和网络请求都不能直接修改state，它们只能表达想要修改的意图。所有的修改都被集中化处理，且严格按照一个接一个的顺序执行,因此不用担心race condition 的出现。 Action是普通对象,可以被日志打印,后期调试或测试时回放出来</p>
-<h2 id="使用纯函数来执行修改"><a href="#使用纯函数来执行修改" class="headerlink" title="使用纯函数来执行修改"></a>使用纯函数来执行修改</h2><p>为了描述action如何改变state tree ，需要编写reducers,reducer只是一些纯函数它接收先前的state和action，并返回新的state。刚开始可以只有一个reducer，随着应用变大，可以拆成多个小的reducers，分别独立地操作state tree 的不同部分,甚至编写可复用的reducer来处理一些通用任务，如分页器</p>
-<h1 id="基础点"><a href="#基础点" class="headerlink" title="基础点"></a>基础点</h1><h2 id="Action"><a href="#Action" class="headerlink" title="Action"></a>Action</h2><p>Action是传输数据的载体，一般我们会用到dispatch这个运输工具来运输数据。Action本质上是一个JavaScript普通对象，在action内必须使用使用一个字符串类型的type字段来表示将要执行的动作，在一般情况下type会定义成一个常量，当大规模使用type时应该使用一个单独的模块来存放action<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">export</span> <span class="keyword">const</span> ADD_TODO = <span class="string">'ADD_TODO'</span>;</div><div class="line"><span class="keyword">export</span> <span class="keyword">const</span> TOGGLE_TODO = <span class="string">'TOGGLE_TODO'</span></div><div class="line"><span class="keyword">export</span> <span class="keyword">const</span> SET_VISIBILITY_FILTER = <span class="string">'SET_VISIBILITY_FILTER'</span></div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"> * 其它的常量</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">const</span> VisibilityFilters = &#123;</div><div class="line">  <span class="attr">SHOW_ALL</span>: <span class="string">'SHOW_ALL'</span>,</div><div class="line">  <span class="attr">SHOW_COMPLETED</span>: <span class="string">'SHOW_COMPLETED'</span>,</div><div class="line">  <span class="attr">SHOW_ACTIVE</span>: <span class="string">'SHOW_ACTIVE'</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"> * action 创建函数</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">addTodo</span>(<span class="params">text</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> &#123; <span class="attr">type</span>: ADD_TODO, text &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">toggleTodo</span>(<span class="params">index</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> &#123; <span class="attr">type</span>: TOGGLE_TODO, index &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">setVisibilityFilter</span>(<span class="params">filter</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> &#123; <span class="attr">type</span>: SET_VISIBILITY_FILTER, filter &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h2 id="Reducer"><a href="#Reducer" class="headerlink" title="Reducer"></a>Reducer</h2><p>Action用来描述将要执行的操作，没有真正的去更新state，需要reducer来执行这一操作。Reducer是一个纯函数，接受就得state和action，返回新的state<br>处理 SET_VISIBILITY_FILTER</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">todoApp</span>(<span class="params">state = initialState, action</span>) </span>&#123;</div><div class="line">  <span class="keyword">switch</span> (action.type) &#123;</div><div class="line">    <span class="keyword">case</span> SET_VISIBILITY_FILTER:</div><div class="line">      <span class="keyword">return</span> <span class="built_in">Object</span>.assign(&#123;&#125;, state, &#123;</div><div class="line">        <span class="attr">visibilityFilter</span>: action.filter</div><div class="line">      &#125;)</div><div class="line">    <span class="keyword">default</span>:</div><div class="line">      <span class="keyword">return</span> state</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>操作type为SET_VISIBILITY_FILTER，然后将数据放入visibilityFilter</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://zhangfengrui.github.io/2016/08/15/gulp/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang FengRui">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Just Do It">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/15/gulp/" itemprop="url">
-                  Gulp随笔
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-15T16:19:53+08:00">
-                2016-08-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>gulp有五个方法task、run、watch、src、dest</p>
-<h2 id="引入组件"><a href="#引入组件" class="headerlink" title="引入组件"></a>引入组件</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>),</div><div class="line">    sass = <span class="built_in">require</span>(<span class="string">'gulp-sass'</span>),</div><div class="line">    autoprefixer = <span class="built_in">require</span>(<span class="string">'gulp-autoprefixer'</span>),</div><div class="line">    minifycss = <span class="built_in">require</span>(<span class="string">'gulp-minify-css'</span>),</div><div class="line">    jshint = <span class="built_in">require</span>(<span class="string">'gulp-jshint'</span>),</div><div class="line">    uglify = <span class="built_in">require</span>(<span class="string">'gulp-uglify'</span>),</div><div class="line">    imagemin = <span class="built_in">require</span>(<span class="string">'gulp-imagemin'</span>),</div><div class="line">    rename = <span class="built_in">require</span>(<span class="string">'gulp-rename'</span>),</div><div class="line">    concat = <span class="built_in">require</span>(<span class="string">'gulp-concat'</span>),</div><div class="line">    notify = <span class="built_in">require</span>(<span class="string">'gulp-notify'</span>),</div><div class="line">    cache = <span class="built_in">require</span>(<span class="string">'gulp-cache'</span>),</div><div class="line">    livereload = <span class="built_in">require</span>(<span class="string">'gulp-livereload'</span>);</div></pre></td></tr></table></figure>
-<p>接下来差创建lint、sass、script、default四个不同的任务。</p>
-<h2 id="Lint任务"><a href="#Lint任务" class="headerlink" title="Lint任务"></a>Lint任务</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">gulp.task(<span class="string">'lint'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    gulp.src(<span class="string">'./js/*.js'</span>)</div><div class="line">        .pipe(jshint())</div><div class="line">        .pipe(jshint.reporter(<span class="string">'default'</span>));</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p>Lint任务会检查js/目录下的js有没有报错或者警告。</p>
-<h2 id="Sass任务"><a href="#Sass任务" class="headerlink" title="Sass任务"></a>Sass任务</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">gulp.task(<span class="string">'sass'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    gulp.src(<span class="string">'./scss/*.scss'</span>)</div><div class="line">        .pipe(sass())</div><div class="line">        .pipe(gulp.dest(<span class="string">'./css'</span>));</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p>Sass会编译scss/目录下的scss文件，并把编译完成的css文件保存到/css目录中。</p>
-<h2 id="Script任务"><a href="#Script任务" class="headerlink" title="Script任务"></a>Script任务</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">gulp.task(<span class="string">'scripts'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    gulp.src(<span class="string">'./js/*.js'</span>)</div><div class="line">        .pipe(concat(<span class="string">'all.js'</span>))</div><div class="line">        .pipe(gulp.dest(<span class="string">'./dist'</span>))</div><div class="line">        .pipe(rename(<span class="string">'all.min.js'</span>))</div><div class="line">        .pipe(uglify())</div><div class="line">        .pipe(gulp.dest(<span class="string">'./dist'</span>));</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p>scripts任务会合并js/目录下的js文件并输出到dist/目录，然后gulp会重命名、压缩合并文件，也输出到dist/目录下。</p>
-<h2 id="Default任务"><a href="#Default任务" class="headerlink" title="Default任务"></a>Default任务</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">gulp.task(<span class="string">'default'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    gulp.run(<span class="string">'lint'</span>, <span class="string">'sass'</span>, <span class="string">'scripts'</span>);</div><div class="line">    gulp.watch(<span class="string">'./js/*.js'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        gulp.run(<span class="string">'lint'</span>, <span class="string">'sass'</span>, <span class="string">'scripts'</span>);</div><div class="line">    &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p>该任务基于其他任务，通过启动default来启动其他任务</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://zhangfengrui.github.io/2016/07/30/jsType/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang FengRui">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Just Do It">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/07/30/jsType/" itemprop="url">
-                  Js中的数据类型
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-30T16:08:16+08:00">
-                2016-07-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="js中的数据类型"><a href="#js中的数据类型" class="headerlink" title="js中的数据类型"></a>js中的数据类型</h2><p>undefined null boolean string number object</p>
-<h2 id="Undefined类型"><a href="#Undefined类型" class="headerlink" title="Undefined类型"></a>Undefined类型</h2><p>Undefined类型只有一个值，即特殊的undefined。声明完一个变量但为对其加以初始化时，这个变量的值就是undefined,当声明一个变量时未经初始化的值就会默认取得undefined值。<br>var message；<br>typeof message // undefined<br>message == undefined true</p>
-<h2 id="Null类型"><a href="#Null类型" class="headerlink" title="Null类型"></a>Null类型</h2><p>Null类型也是只有一个值，这个值就是null。从逻辑的角度来讲，null值表示一个空对象指针。当使用typeof来判断类型时，就会出现typeof null 为object的情况。Null的使用，当定义一个变量时，如果准备将来用于保存对象，那么最好将该变量初始化为null而不是其他值。<br>Undefined和Null的关系<br>事实上，undefined值是由null派生而来的，因此判断他们的的相等性时会返回true，即alert(undefined == null); 返回true。</p>
-<h2 id="Boolean类型"><a href="#Boolean类型" class="headerlink" title="Boolean类型"></a>Boolean类型</h2><p>Boolean类型是比较常用的类型，该类型只有两个字面值true和false。要注意的一点是，这两个值与数字值不是一回事，true不一定等于1，而false也不一定等于0.true和false是区分大小写的。</p>
-<h2 id="Number类型"><a href="#Number类型" class="headerlink" title="Number类型"></a>Number类型</h2><p>Number类型，这里主要说一下一个特殊的数值，NaN即非数值（Not a Number），这个数值用于表示一个本来要返回数值的操作是未返回数值的情况。3个可以将非字符型的数值转化为字符型：Number()、paeseInt()、parseFloat()。</p>
-<h2 id="String类型"><a href="#String类型" class="headerlink" title="String类型"></a>String类型</h2><p>String类型用于表示字符串，字符串可以有双引号或单引号表示。<br>字符串的特点：<br>ECMAScript中的字符串是不可以改变的，字符串一旦被创建，他们的值就不会改变。要改变某个变量保存的字符串，首先要销毁原来的字符串，然后再用另一个新的包含新值得字符串填充该变量。<br>转化为字符串：<br>使用几乎每个值都有的toString()方法。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1551,7 +703,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
